@@ -2,7 +2,7 @@ name: DevOps Eval 3 CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build-and-test:
