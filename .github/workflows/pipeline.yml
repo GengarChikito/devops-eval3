@@ -17,11 +17,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # IE5 & IE6: Validación de calidad y Pruebas. Si esto falla, se detiene todo.
+
       - name: Build and Test
         run: mvn clean verify
 
-      # Login en Docker Hub (necesitas crear secretos en GitHub: DOCKER_USERNAME y DOCKER_PASSWORD)
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -34,15 +34,15 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/devops-eval3:latest
 
   deploy:
-    needs: build-and-test # IE6: Solo corre si el anterior pasó
+    needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}  # La IP Pública de tu EC2
-          username: ec2-user             # O ubuntu, dependiendo de tu AMI
-          key: ${{ secrets.EC2_SSH_KEY }} # Tu archivo .pem (copia el contenido al secreto)
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # IE2: Despliegue en entorno orquestado (Docker simple)
             docker stop devops-app || true
